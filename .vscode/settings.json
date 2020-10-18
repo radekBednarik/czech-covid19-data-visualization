@@ -1,0 +1,12 @@
+{
+    "python.pythonPath": "C:\\Users\\bedna\\.virtualenvs\\czech_covid19_data_visualization-WuuR4Sn4\\Scripts\\python.exe",
+    "python.linting.pylintEnabled": true,
+    "python.linting.prospectorEnabled": false,
+    "python.linting.enabled": true,
+    "python.linting.lintOnSave": true,
+    "python.linting.mypyEnabled": true,
+    "python.formatting.provider": "black",
+    "editor.formatOnPaste": true,
+    "editor.formatOnType": true,
+    "editor.formatOnSave": true
+}

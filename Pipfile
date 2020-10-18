@@ -1,0 +1,22 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+black = "*"
+mypy = "*"
+isort = "*"
+pylint = "*"
+
+[packages]
+czech-covid19-data-api = "*"
+dash = "*"
+dash-bootstrap-components = "*"
+pandas = "*"
+
+[requires]
+python_version = "3.9"
+
+[pipenv]
+allow_prereleases = true
