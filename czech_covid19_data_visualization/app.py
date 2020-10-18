@@ -1,8 +1,12 @@
-from typing import List
+from typing import Any, List
 
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
+from dash.dependencies import Input, Output
+from dash.exceptions import PreventUpdate
+
+from czech_covid19_data_visualization import data
 
 external_stylesheets: List[str] = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
@@ -13,6 +17,7 @@ app: dash.Dash = dash.Dash(
 app.layout = html.Div(
     id="mainWrapper",
     children=[
+        dcc.Store(id="dataStorage", storage_type="session"),
         html.Div(
             id="headlineWrapper",
             children=[html.H1(id="headline", children="COVID19 Czech Data Visualizer")],
@@ -28,7 +33,8 @@ app.layout = html.Div(
                             options=[
                                 {"label": "Number of infected", "value": "infected"}
                             ],
-                            value="Number of infected",
+                            value=["infected"],
+                            multi=True,
                         )
                     ],
                 )
@@ -38,3 +44,15 @@ app.layout = html.Div(
         html.Div(id="graphicWrapper", children=[]),
     ],
 )
+
+# CALLBACKS
+@app.callback(
+    Output(component_id="dataStorage", component_property="data"),
+    [Input(component_id="dataSelector", component_property="value")],
+)
+def store_data(value) -> Any:
+    if value is None:
+        PreventUpdate()
+
+    if "infected" in value:
+        return data.number_of_infected()
