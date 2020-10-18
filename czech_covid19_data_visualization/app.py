@@ -1,8 +1,8 @@
+from typing import List
+
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-
-from typing import List
 
 external_stylesheets: List[str] = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
@@ -25,7 +25,10 @@ app.layout = html.Div(
                     children=[
                         dcc.Dropdown(
                             id="dataSelector",
-                            options=[{"label": "some label", "value": "some value"}],
+                            options=[
+                                {"label": "Number of infected", "value": "some value"}
+                            ],
+                            value="Number of infected",
                         )
                     ],
                 )
