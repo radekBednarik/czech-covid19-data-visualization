@@ -26,7 +26,7 @@ app.layout = html.Div(
                         dcc.Dropdown(
                             id="dataSelector",
                             options=[
-                                {"label": "Number of infected", "value": "some value"}
+                                {"label": "Number of infected", "value": "infected"}
                             ],
                             value="Number of infected",
                         )
