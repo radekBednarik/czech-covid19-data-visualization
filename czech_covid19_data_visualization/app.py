@@ -7,6 +7,7 @@ from dash.dependencies import Input, Output
 from dash.exceptions import PreventUpdate
 
 from czech_covid19_data_visualization import data
+from czech_covid19_data_visualization import graphs
 
 external_stylesheets: List[str] = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
@@ -48,11 +49,26 @@ app.layout = html.Div(
 # CALLBACKS
 @app.callback(
     Output(component_id="dataStorage", component_property="data"),
-    [Input(component_id="dataSelector", component_property="value")],
+    [
+        Input(component_id="dataSelector", component_property="value"),
+    ],
 )
 def store_data(value) -> Any:
     if value is None:
         PreventUpdate()
 
-    if "infected" in value:
-        return data.number_of_infected()
+    else:
+        if "infected" in value:
+            return data.number_of_infected()
+
+
+@app.callback(
+    Output(component_id="graphicWrapper", component_property="children"),
+    [Input(component_id="dataStorage", component_property="data")],
+)
+def display_data(data) -> Any:
+    if data is None:
+        PreventUpdate()
+
+    else:
+        return graphs.graph_vertical_bar(data, graph_number=1)
