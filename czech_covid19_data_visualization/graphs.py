@@ -11,10 +11,15 @@ def vertical_bar_and_line_2inputs(
     data: List[Dict[str, Any]], graph_number: int = 1
 ) -> Any:
     df: DataFrame = DataFrame.from_records(data)
+    labels: List[str] = df.columns
 
     fig: Any = make_subplots(specs=[[{"secondary_y": True}]])
-    fig.add_trace(go.Bar(x=df.iloc[:, 0], y=df.iloc[:, 1]), secondary_y=False)
-    fig.add_trace(go.Scatter(x=df.iloc[:, 0], y=df.iloc[:, 2]), secondary_y=True)
+    fig.add_trace(
+        go.Bar(name=labels[1], x=df.iloc[:, 0], y=df.iloc[:, 1]), secondary_y=False
+    )
+    fig.add_trace(
+        go.Scatter(name=labels[2], x=df.iloc[:, 0], y=df.iloc[:, 2]), secondary_y=True
+    )
 
     return html.Div(
         id=f"graphWrapper_{graph_number}",
@@ -24,11 +29,18 @@ def vertical_bar_and_line_2inputs(
 
 def line_3inputs(data: List[Dict[str, Any]], graph_number: int = 1) -> Any:
     df: DataFrame = DataFrame.from_records(data)
+    labels: List[str] = df.columns
 
     fig: Any = make_subplots(specs=[[{"secondary_y": True}]])
-    fig.add_trace(go.Scatter(x=df.iloc[:, 0], y=df.iloc[:, 1]), secondary_y=False)
-    fig.add_trace(go.Scatter(x=df.iloc[:, 0], y=df.iloc[:, 2]), secondary_y=False)
-    fig.add_trace(go.Scatter(x=df.iloc[:, 0], y=df.iloc[:, 3]), secondary_y=True)
+    fig.add_trace(
+        go.Scatter(name=labels[1], x=df.iloc[:, 0], y=df.iloc[:, 1]), secondary_y=False
+    )
+    fig.add_trace(
+        go.Scatter(name=labels[2], x=df.iloc[:, 0], y=df.iloc[:, 2]), secondary_y=False
+    )
+    fig.add_trace(
+        go.Scatter(name=labels[3], x=df.iloc[:, 0], y=df.iloc[:, 3]), secondary_y=True
+    )
 
     return html.Div(
         id=f"graphWrapper_{graph_number}",
