@@ -36,11 +36,34 @@ def line_3inputs(data: List[Dict[str, Any]], graph_number: int = 1) -> Any:
     )
 
 
-def bar_one_timepoint(data: List[Dict[str, Any]], graph_number: int = 1) -> Any:
+def bar_one_timepoint_overview(
+    data: List[Dict[str, Any]], graph_number: int = 1
+) -> Any:
     x: List[str] = list(data[0].keys())
-    y: List[int] = list(data[0].values())
+    data_: Dict[str, int] = data[0]
 
-    fig: Any = go.Figure([go.Bar(x=x[1:], y=y[1:])])
+    fig: Any = make_subplots(specs=[[{"secondary_y": True}]])
+    fig.add_trace(
+        go.Bar(x=[x[1]], y=[data_["provedene_testy_celkem"]]), secondary_y=False
+    )
+    fig.add_trace(
+        go.Bar(x=[x[2]], y=[data_["potvrzene_pripady_celkem"]]), secondary_y=False
+    )
+    fig.add_trace(go.Bar(x=[x[3]], y=[data_["aktivni_pripady"]]), secondary_y=False)
+    fig.add_trace(go.Bar(x=[x[4]], y=[data_["vyleceni"]]), secondary_y=False)
+    fig.add_trace(go.Bar(x=[x[5]], y=[data_["umrti"]]), secondary_y=True)
+    fig.add_trace(
+        go.Bar(x=[x[6]], y=[data_["aktualne_hospitalizovani"]]), secondary_y=True
+    )
+    fig.add_trace(
+        go.Bar(x=[x[7]], y=[data_["provedene_testy_vcerejsi_den"]]), secondary_y=True
+    )
+    fig.add_trace(
+        go.Bar(x=[x[8]], y=[data_["potvrzene_pripady_vcerejsi_den"]]), secondary_y=True
+    )
+    fig.add_trace(
+        go.Bar(x=[x[9]], y=[data_["potvrzene_pripady_dnesni_den"]]), secondary_y=True
+    )
 
     return html.Div(
         id=f"graphWrapper_{graph_number}",

@@ -99,4 +99,4 @@ def display_data(data, value) -> Any:
             return graphs.line_3inputs(data, graph_number=1)
 
         if value == "basic_overview":
-            return graphs.bar_one_timepoint(data, graph_number=1)
+            return graphs.bar_one_timepoint_overview(data, graph_number=1)
