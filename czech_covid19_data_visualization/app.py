@@ -71,4 +71,4 @@ def display_data(data) -> Any:
         PreventUpdate()
 
     else:
-        return graphs.graph_vertical_bar(data, graph_number=1)
+        return graphs.vertical_bar_and_line(data, graph_number=1)
