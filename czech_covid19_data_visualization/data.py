@@ -26,4 +26,7 @@ def get(data: str = "infected") -> Data:
     if data == "all_numbers":
         return _fetch(api.get_all_numbers)
 
+    if data == "basic_overview":
+        return _fetch(api.get_basic_overview)
+
     return None

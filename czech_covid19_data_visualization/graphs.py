@@ -34,3 +34,15 @@ def line_3inputs(data: List[Dict[str, Any]], graph_number: int = 1) -> Any:
         id=f"graphWrapper_{graph_number}",
         children=[dcc.Graph(id=f"lineChart_{graph_number}", figure=fig)],
     )
+
+
+def bar_one_timepoint(data: List[Dict[str, Any]], graph_number: int = 1) -> Any:
+    x: List[str] = list(data[0].keys())
+    y: List[int] = list(data[0].values())
+
+    fig: Any = go.Figure([go.Bar(x=x[1:], y=y[1:])])
+
+    return html.Div(
+        id=f"graphWrapper_{graph_number}",
+        children=[dcc.Graph(id=f"barChart_{graph_number}", figure=fig)],
+    )
