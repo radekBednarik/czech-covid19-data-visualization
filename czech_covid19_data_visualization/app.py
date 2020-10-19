@@ -34,6 +34,10 @@ app.layout = html.Div(
                             options=[
                                 {"label": "Number of infected", "value": "infected"},
                                 {"label": "Number of tests done", "value": "tests"},
+                                {
+                                    "label": "Number of infected, cured, deaths and tests done",
+                                    "value": "all_numbers",
+                                },
                             ],
                             value="infected",
                             multi=False,
@@ -65,6 +69,9 @@ def store_data(value) -> Any:
         if value == "tests":
             return data.get(data="tests")
 
+        if value == "all_numbers":
+            return data.get(data="all_numbers")
+
 
 @app.callback(
     Output(component_id="graphicWrapper", component_property="children"),
@@ -79,7 +86,10 @@ def display_data(data, value) -> Any:
 
     else:
         if value == "infected":
-            return graphs.vertical_bar_and_line(data, graph_number=1)
+            return graphs.vertical_bar_and_line_2inputs(data, graph_number=1)
 
         if value == "tests":
-            return graphs.vertical_bar_and_line(data, graph_number=1)
+            return graphs.vertical_bar_and_line_2inputs(data, graph_number=1)
+
+        if value == "all_numbers":
+            return graphs.line_3inputs(data, graph_number=1)

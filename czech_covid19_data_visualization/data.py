@@ -23,4 +23,7 @@ def get(data: str = "infected") -> Data:
     if data == "tests":
         return _fetch(api.get_number_of_tests_done)
 
+    if data == "all_numbers":
+        return _fetch(api.get_all_numbers)
+
     return None

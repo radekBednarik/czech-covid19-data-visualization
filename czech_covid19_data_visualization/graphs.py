@@ -8,7 +8,9 @@ from pandas import DataFrame
 from plotly.subplots import make_subplots
 
 
-def vertical_bar_and_line(data: List[Dict[str, Any]], graph_number: int = 1) -> Any:
+def vertical_bar_and_line_2inputs(
+    data: List[Dict[str, Any]], graph_number: int = 1
+) -> Any:
     df: DataFrame = DataFrame.from_records(data)
 
     fig: Any = make_subplots(specs=[[{"secondary_y": True}]])
@@ -18,4 +20,18 @@ def vertical_bar_and_line(data: List[Dict[str, Any]], graph_number: int = 1) -> 
     return html.Div(
         id=f"graphWrapper_{graph_number}",
         children=[dcc.Graph(id=f"barLineChart_{graph_number}", figure=fig)],
+    )
+
+
+def line_3inputs(data: List[Dict[str, Any]], graph_number: int = 1) -> Any:
+    df: DataFrame = DataFrame.from_records(data)
+
+    fig: Any = make_subplots(specs=[[{"secondary_y": True}]])
+    fig.add_trace(go.Scatter(x=df.iloc[:, 0], y=df.iloc[:, 1]), secondary_y=False)
+    fig.add_trace(go.Scatter(x=df.iloc[:, 0], y=df.iloc[:, 2]), secondary_y=False)
+    fig.add_trace(go.Scatter(x=df.iloc[:, 0], y=df.iloc[:, 3]), secondary_y=True)
+
+    return html.Div(
+        id=f"graphWrapper_{graph_number}",
+        children=[dcc.Graph(id=f"barChart_{graph_number}", figure=fig)],
     )
