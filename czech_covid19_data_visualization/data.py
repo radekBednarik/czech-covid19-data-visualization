@@ -4,8 +4,13 @@ from typing import Any, Callable, Dict, Optional, List, Tuple, Union
 from covid19_api.src import api
 from pandas import DataFrame
 
+# TYPE ALIASES
 
-def get(data: str = "infected"):
+# pylint: disable=unsubscriptable-object
+Data = Optional[List[Dict[str, Any]]]
+
+
+def get(data: str = "infected") -> Data:
     def _fetch(func):
         (check, raw_data) = func()
         if check:
@@ -14,3 +19,5 @@ def get(data: str = "infected"):
 
     if data == "infected":
         return _fetch(api.get_number_of_infected)
+
+    return None
