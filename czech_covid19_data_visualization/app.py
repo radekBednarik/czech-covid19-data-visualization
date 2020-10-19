@@ -59,7 +59,7 @@ def store_data(value) -> Any:
 
     else:
         if "infected" in value:
-            return data.number_of_infected()
+            return data.get(data="infected")
 
 
 @app.callback(

@@ -1,17 +1,16 @@
 import json
-from typing import Any, Dict, Optional, List
+from typing import Any, Callable, Dict, Optional, List, Tuple, Union
 
 from covid19_api.src import api
 from pandas import DataFrame
 
 
-# pylint: disable=unsubscriptable-object
-def number_of_infected() -> Optional[List[Dict[str, Any]]]:
-    (check, raw_data) = api.get_number_of_infected()
-    if check:
-        return raw_data["data"]
-    return None
+def get(data: str = "infected"):
+    def _fetch(func):
+        (check, raw_data) = func()
+        if check:
+            return raw_data["data"]
+        return None
 
-
-if __name__ == "__main__":
-    number_of_infected()
+    if data == "infected":
+        return _fetch(api.get_number_of_infected)
