@@ -32,10 +32,11 @@ app.layout = html.Div(
                         dcc.Dropdown(
                             id="dataSelector",
                             options=[
-                                {"label": "Number of infected", "value": "infected"}
+                                {"label": "Number of infected", "value": "infected"},
+                                {"label": "Number of tests done", "value": "tests"},
                             ],
-                            value=["infected"],
-                            multi=True,
+                            value="infected",
+                            multi=False,
                         )
                     ],
                 )
@@ -58,17 +59,27 @@ def store_data(value) -> Any:
         PreventUpdate()
 
     else:
-        if "infected" in value:
+        if value == "infected":
             return data.get(data="infected")
+
+        if value == "tests":
+            return data.get(data="tests")
 
 
 @app.callback(
     Output(component_id="graphicWrapper", component_property="children"),
-    [Input(component_id="dataStorage", component_property="data")],
+    [
+        Input(component_id="dataStorage", component_property="data"),
+        Input(component_id="dataSelector", component_property="value"),
+    ],
 )
-def display_data(data) -> Any:
+def display_data(data, value) -> Any:
     if data is None:
         PreventUpdate()
 
     else:
-        return graphs.vertical_bar_and_line(data, graph_number=1)
+        if value == "infected":
+            return graphs.vertical_bar_and_line(data, graph_number=1)
+
+        if value == "tests":
+            return graphs.vertical_bar_and_line(data, graph_number=1)
