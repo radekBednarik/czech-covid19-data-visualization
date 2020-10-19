@@ -2,7 +2,6 @@ from typing import Any, Dict, List
 
 import dash_core_components as dcc
 import dash_html_components as html
-import pandas as pd
 import plotly.graph_objects as go
 from pandas import DataFrame
 from plotly.subplots import make_subplots
@@ -33,5 +32,5 @@ def line_3inputs(data: List[Dict[str, Any]], graph_number: int = 1) -> Any:
 
     return html.Div(
         id=f"graphWrapper_{graph_number}",
-        children=[dcc.Graph(id=f"barChart_{graph_number}", figure=fig)],
+        children=[dcc.Graph(id=f"lineChart_{graph_number}", figure=fig)],
     )
