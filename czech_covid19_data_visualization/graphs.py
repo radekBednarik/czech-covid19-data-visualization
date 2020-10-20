@@ -1,4 +1,4 @@
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Tuple
 
 import dash_core_components as dcc
 import dash_html_components as html
@@ -48,34 +48,19 @@ def line_3inputs(data: List[Dict[str, Any]], graph_number: int = 1) -> Any:
     )
 
 
-def bar_one_timepoint_overview(
-    data: List[Dict[str, Any]], graph_number: int = 1
-) -> Any:
-    x: List[str] = list(data[0].keys())
+def bar_one_timepoint(data: List[Dict[str, Any]], graph_number: int = 1) -> Any:
     data_: Dict[str, int] = data[0]
+    values: List[int] = list(data_.values())
+    items: List[Tuple[str, int]] = sorted(
+        list(data_.items())[1:], key=lambda item: item[1], reverse=True
+    )
+    thresh: float = max(values[1:]) * 0.2
 
     fig: Any = make_subplots(specs=[[{"secondary_y": True}]])
-    fig.add_trace(
-        go.Bar(x=[x[1]], y=[data_["provedene_testy_celkem"]]), secondary_y=False
-    )
-    fig.add_trace(
-        go.Bar(x=[x[2]], y=[data_["potvrzene_pripady_celkem"]]), secondary_y=False
-    )
-    fig.add_trace(go.Bar(x=[x[3]], y=[data_["aktivni_pripady"]]), secondary_y=False)
-    fig.add_trace(go.Bar(x=[x[4]], y=[data_["vyleceni"]]), secondary_y=False)
-    fig.add_trace(go.Bar(x=[x[5]], y=[data_["umrti"]]), secondary_y=True)
-    fig.add_trace(
-        go.Bar(x=[x[6]], y=[data_["aktualne_hospitalizovani"]]), secondary_y=True
-    )
-    fig.add_trace(
-        go.Bar(x=[x[7]], y=[data_["provedene_testy_vcerejsi_den"]]), secondary_y=True
-    )
-    fig.add_trace(
-        go.Bar(x=[x[8]], y=[data_["potvrzene_pripady_vcerejsi_den"]]), secondary_y=True
-    )
-    fig.add_trace(
-        go.Bar(x=[x[9]], y=[data_["potvrzene_pripady_dnesni_den"]]), secondary_y=True
-    )
+
+    for label, value in items:
+        sec_y: bool = False if value > thresh else True
+        fig.add_trace(go.Bar(name=label, x=[label], y=[value]), secondary_y=sec_y)
 
     return html.Div(
         id=f"graphWrapper_{graph_number}",
