@@ -8,13 +8,14 @@ from pandas import DataFrame
 
 # pylint: disable=unsubscriptable-object
 Data = Optional[List[Dict[str, Any]]]
+ResourceReturn = Optional[Dict[str, Union[str, Data]]]
 
 
-def get(data: str = "infected") -> Data:
+def get(data: str = "infected") -> ResourceReturn:
     def _fetch(func):
         (check, raw_data) = func()
         if check:
-            return raw_data["data"]
+            return raw_data
         return None
 
     if data == "infected":

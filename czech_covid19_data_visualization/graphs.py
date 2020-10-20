@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Tuple, Union, Optional
 
 import dash_core_components as dcc
 import dash_html_components as html
@@ -6,11 +6,14 @@ import plotly.graph_objects as go
 from pandas import DataFrame
 from plotly.subplots import make_subplots
 
+# pylint: disable=unsubscriptable-object
+Data = Optional[List[Dict[str, Any]]]
+ResourceReturn = Optional[Dict[str, Union[str, Data]]]
 
 def vertical_bar_and_line_2inputs(
-    data: List[Dict[str, Any]], graph_number: int = 1
+    data: ResourceReturn, graph_number: int = 1
 ) -> Any:
-    df: DataFrame = DataFrame.from_records(data)
+    df: DataFrame = DataFrame.from_records(data["data"])
     labels: List[str] = df.columns
 
     fig: Any = make_subplots(specs=[[{"secondary_y": True}]])
@@ -27,8 +30,8 @@ def vertical_bar_and_line_2inputs(
     )
 
 
-def line_3inputs(data: List[Dict[str, Any]], graph_number: int = 1) -> Any:
-    df: DataFrame = DataFrame.from_records(data)
+def line_3inputs(data: ResourceReturn, graph_number: int = 1) -> Any:
+    df: DataFrame = DataFrame.from_records(data["data"])
     labels: List[str] = df.columns
 
     fig: Any = make_subplots(specs=[[{"secondary_y": True}]])
@@ -48,8 +51,8 @@ def line_3inputs(data: List[Dict[str, Any]], graph_number: int = 1) -> Any:
     )
 
 
-def bar_one_timepoint(data: List[Dict[str, Any]], graph_number: int = 1) -> Any:
-    data_: Dict[str, int] = data[0]
+def bar_one_timepoint(data: ResourceReturn, graph_number: int = 1) -> Any:
+    data_: Dict[str, int] = data["data"][0]
     values: List[int] = list(data_.values())
     items: List[Tuple[str, int]] = sorted(
         list(data_.items())[1:], key=lambda item: item[1], reverse=True
