@@ -7,12 +7,10 @@ from pandas import DataFrame
 from plotly.subplots import make_subplots
 
 # pylint: disable=unsubscriptable-object
-Data = Optional[List[Dict[str, Any]]]
-ResourceReturn = Optional[Dict[str, Union[str, Data]]]
+Data = Dict[str, Union[str, List[Dict[str, Any]]]]
 
-def vertical_bar_and_line_2inputs(
-    data: ResourceReturn, graph_number: int = 1
-) -> Any:
+
+def vertical_bar_and_line_2inputs(data: Data, graph_number: int = 1) -> Any:
     df: DataFrame = DataFrame.from_records(data["data"])
     labels: List[str] = df.columns
 
@@ -30,7 +28,7 @@ def vertical_bar_and_line_2inputs(
     )
 
 
-def line_3inputs(data: ResourceReturn, graph_number: int = 1) -> Any:
+def line_3inputs(data: Data, graph_number: int = 1) -> Any:
     df: DataFrame = DataFrame.from_records(data["data"])
     labels: List[str] = df.columns
 
@@ -51,8 +49,8 @@ def line_3inputs(data: ResourceReturn, graph_number: int = 1) -> Any:
     )
 
 
-def bar_one_timepoint(data: ResourceReturn, graph_number: int = 1) -> Any:
-    data_: Dict[str, int] = data["data"][0]
+def bar_one_timepoint(data: Data, graph_number: int = 1) -> Any:
+    data_: Dict[str, Any] = data["data"][0]
     values: List[int] = list(data_.values())
     items: List[Tuple[str, int]] = sorted(
         list(data_.items())[1:], key=lambda item: item[1], reverse=True
