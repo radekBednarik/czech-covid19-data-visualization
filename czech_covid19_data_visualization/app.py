@@ -49,6 +49,22 @@ app.layout = html.Div(
         ),
         html.Div(id="divisionWrapper", children=[html.Hr(id="menuSeparator")]),
         html.Div(id="graphicWrapper", children=[]),
+        html.Div(
+            id="footerWrapper",
+            children=[
+                html.Div(
+                    id="dataSourceWrapper",
+                    children=[
+                        html.A(
+                            id="linkDataSource",
+                            href="https://onemocneni-aktualne.mzcr.cz/api/v2/covid-19",
+                            target="_blank",
+                            children=["Data source"],
+                        )
+                    ],
+                )
+            ],
+        ),
     ],
 )
 
