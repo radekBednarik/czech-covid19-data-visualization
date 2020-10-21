@@ -18,7 +18,7 @@ app: dash.Dash = dash.Dash(
 app.layout = html.Div(
     id="mainWrapper",
     children=[
-        dcc.Store(id="dataStorage", storage_type="session"),
+        dcc.Store(id="dataStorage", storage_type="memory"),
         html.Div(
             id="headlineWrapper",
             children=[html.H1(id="headline", children="COVID19 Czech Data Visualizer")],
@@ -39,6 +39,10 @@ app.layout = html.Div(
                                     "value": "all_numbers",
                                 },
                                 {"label": "Basic overview", "value": "basic_overview"},
+                                {
+                                    "label": "Age distribution of male cured patients",
+                                    "value": "cured_men",
+                                },
                             ],
                             value="infected",
                             multi=False,
@@ -92,6 +96,9 @@ def store_data(value) -> Any:
         if value == "basic_overview":
             return data.get(data="basic_overview")
 
+        if value == "cured_men":
+            return data.get(data="cured_men")
+
 
 @app.callback(
     Output(component_id="graphicWrapper", component_property="children"),
@@ -116,3 +123,6 @@ def display_data(data, value) -> Any:
 
         if value == "basic_overview":
             return graphs.bar_one_timepoint(data, graph_number=1)
+
+        if value == "cured_men":
+            return graphs.histogram(data, graph_number=1)

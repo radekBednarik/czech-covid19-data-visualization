@@ -1,10 +1,12 @@
-from typing import Any, Dict, List, Tuple, Union, Optional
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 import dash_core_components as dcc
 import dash_html_components as html
 import plotly.graph_objects as go
 from pandas import DataFrame
 from plotly.subplots import make_subplots
+
+from czech_covid19_data_visualization.data import make_bins
 
 # pylint: disable=unsubscriptable-object
 Data = Dict[str, Union[str, List[Dict[str, Any]]]]
@@ -66,4 +68,18 @@ def bar_one_timepoint(data: Data, graph_number: int = 1) -> Any:
     return html.Div(
         id=f"graphWrapper_{graph_number}",
         children=[dcc.Graph(id=f"barChart_{graph_number}", figure=fig)],
+    )
+
+
+def histogram(data: Any, graph_number: int = 1) -> Any:
+    data_: Dict[str, Any] = data["data"]
+    bins_set: Dict[str, Any] = make_bins(data_)
+
+    fig: Any = make_subplots(rows=1, cols=len(list(bins_set.keys())))
+    for key, values in list(bins_set.items()):
+        fig.add_trace(go.Histogram(name=key, x=values))
+
+    return html.Div(
+        id=f"graphWrapper_{graph_number}",
+        children=[dcc.Graph(id=f"histogram_{graph_number}", figure=fig)],
     )
