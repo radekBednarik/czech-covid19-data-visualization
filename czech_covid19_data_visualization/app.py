@@ -40,8 +40,8 @@ app.layout = html.Div(
                                 },
                                 {"label": "Basic overview", "value": "basic_overview"},
                                 {
-                                    "label": "Age distribution of male cured patients",
-                                    "value": "cured_men",
+                                    "label": "Age distribution of cured patients",
+                                    "value": "cured",
                                 },
                             ],
                             value="infected",
@@ -96,8 +96,8 @@ def store_data(value) -> Any:
         if value == "basic_overview":
             return data.get(data="basic_overview")
 
-        if value == "cured_men":
-            return data.get(data="cured_men")
+        if value == "cured":
+            return data.get(data="cured")
 
 
 @app.callback(
@@ -124,5 +124,5 @@ def display_data(data, value) -> Any:
         if value == "basic_overview":
             return graphs.bar_one_timepoint(data, graph_number=1)
 
-        if value == "cured_men":
+        if value == "cured":
             return graphs.histogram(data, graph_number=1)

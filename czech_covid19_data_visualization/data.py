@@ -31,45 +31,15 @@ def get(data: str = "infected") -> ResourceReturn:
     if data == "basic_overview":
         return _fetch(api.get_basic_overview)
 
-    if data == "cured_men":
+    if data == "cured":
         return _fetch(api.get_cured_overview)
 
     return None
 
 
-def make_bins(data: Any) -> Any:
+def transform_for_histogram(data: Any) -> Any:
     df: DataFrame = DataFrame.from_records(data)
-    df_m = df[df["pohlavi"] == "M"]
-    df_z = df[df["pohlavi"] == "Z"]
-    bins = pd.IntervalIndex.from_tuples(
-        [(0, 18), (19, 30), (31, 50), (51, 65), (66, 75), (76, 120)]
-    )
+    df_m = df[df["pohlavi"] == "M"]["vek"].dropna()
+    df_z = df[df["pohlavi"] == "Z"]["vek"].dropna()
 
-    # and change types to be compatible with DASH serialization requirements :(
-    bins_m = pd.cut(df_m["vek"], bins, precision=0, include_lowest=True)
-    bins_z = pd.cut(df_z["vek"], bins, precision=0, include_lowest=True)
-
-    bins_m = bins_m[bins_m.notna()].to_list()
-    bins_z = bins_z[bins_z.notna()].to_list()
-    bins_m = [(item.left, item.right) for item in bins_m]
-    bins_z = [(item.left, item.right) for item in bins_z]
-
-    return {"men": bins_m, "women": bins_z}
-
-
-# if __name__ == "__main__":
-#     import pandas as pd
-#     from pandas import DataFrame
-
-#     df: DataFrame = DataFrame.from_records(get(data="cured_individuals")["data"])
-#     df_m = df[df["pohlavi"] == "M"]
-#     df_z = df[df["pohlavi"] == "Z"]
-
-#     bins = pd.IntervalIndex.from_tuples(
-#         [(0, 18), (19, 30), (31, 50), (51, 65), (66, 75), (76, 120)]
-#     )
-
-#     bins_m = pd.cut(df_m["vek"], bins, precision=0, include_lowest=True)
-#     bins_z = pd.cut(df_z["vek"], bins, precision=0, include_lowest=True)
-#     print(bins_m)
-#     print(bins_z)
+    return {"men": df_m, "women": df_z}

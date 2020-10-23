@@ -6,7 +6,7 @@ import plotly.graph_objects as go
 from pandas import DataFrame
 from plotly.subplots import make_subplots
 
-from czech_covid19_data_visualization.data import make_bins
+from czech_covid19_data_visualization.data import transform_for_histogram
 
 # pylint: disable=unsubscriptable-object
 Data = Dict[str, Union[str, List[Dict[str, Any]]]]
@@ -73,11 +73,15 @@ def bar_one_timepoint(data: Data, graph_number: int = 1) -> Any:
 
 def histogram(data: Any, graph_number: int = 1) -> Any:
     data_: Dict[str, Any] = data["data"]
-    bins_set: Dict[str, Any] = make_bins(data_)
+    transformed_data: Dict[str, Any] = transform_for_histogram(data_)
 
-    fig: Any = make_subplots(rows=1, cols=len(list(bins_set.keys())))
-    for key, values in list(bins_set.items()):
-        fig.add_trace(go.Histogram(name=key, x=values))
+    fig: Any = make_subplots(rows=1, cols=len(list(transformed_data.keys())))
+    for i, key in enumerate(list(transformed_data.keys())):
+        fig.append_trace(
+            go.Histogram(name=key, x=transformed_data[key], nbinsx=10),
+            1,
+            i + 1,
+        )
 
     return html.Div(
         id=f"graphWrapper_{graph_number}",
