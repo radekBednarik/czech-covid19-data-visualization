@@ -46,8 +46,13 @@ def make_bins(data: Any) -> Any:
     )
 
     # and change types to be compatible with DASH serialization requirements :(
-    bins_m = pd.cut(df_m["vek"], bins, precision=0, include_lowest=True).to_list()
-    bins_z = pd.cut(df_z["vek"], bins, precision=0, include_lowest=True).to_list()
+    bins_m = pd.cut(df_m["vek"], bins, precision=0, include_lowest=True)
+    bins_z = pd.cut(df_z["vek"], bins, precision=0, include_lowest=True)
+
+    bins_m = bins_m[bins_m.notna()].to_list()
+    bins_z = bins_z[bins_z.notna()].to_list()
+    bins_m = [(item.left, item.right) for item in bins_m]
+    bins_z = [(item.left, item.right) for item in bins_z]
 
     return {"men": bins_m, "women": bins_z}
 
