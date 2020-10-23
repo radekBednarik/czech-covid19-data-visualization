@@ -37,6 +37,9 @@ def get(data: str = "infected") -> ResourceReturn:
     if data == "dead":
         return _fetch(api.get_deaths_overview)
 
+    if data == "infected_individuals":
+        return _fetch(api.get_infected_overview)
+
     return None
 
 
