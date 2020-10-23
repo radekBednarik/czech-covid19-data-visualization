@@ -53,7 +53,6 @@ def line_3inputs(data: Data, graph_number: int = 1) -> Any:
 
 def bar_one_timepoint(data: Data, graph_number: int = 1) -> Any:
     data_: Dict[str, Any] = data["data"][0]
-    print(data_)
     values: List[int] = list(data_.values())
     items: List[Tuple[str, int]] = sorted(
         list(data_.items())[1:8], key=lambda item: item[1], reverse=True
