@@ -43,6 +43,10 @@ app.layout = html.Div(
                                     "label": "Age distribution of cured patients",
                                     "value": "cured",
                                 },
+                                {
+                                    "label": "Age distribution of dead patients",
+                                    "value": "dead",
+                                },
                             ],
                             value="infected",
                             multi=False,
@@ -99,6 +103,9 @@ def store_data(value) -> Any:
         if value == "cured":
             return data.get(data="cured")
 
+        if value == "dead":
+            return data.get(data="dead")
+
 
 @app.callback(
     Output(component_id="graphicWrapper", component_property="children"),
@@ -125,4 +132,7 @@ def display_data(data, value) -> Any:
             return graphs.bar_one_timepoint(data, graph_number=1)
 
         if value == "cured":
+            return graphs.histogram(data, graph_number=1)
+
+        if value == "dead":
             return graphs.histogram(data, graph_number=1)
