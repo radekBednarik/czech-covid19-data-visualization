@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "C:\\Users\\bedna\\.virtualenvs\\czech_covid19_data_visualization-WuuR4Sn4\\Scripts\\python.exe",
+    "python.pythonPath": "/home/radek/.virtualenvs/czech-covid19-data-visualization-vlmmL9d8/bin/python",
     "python.linting.pylintEnabled": true,
     "python.linting.prospectorEnabled": false,
     "python.linting.enabled": true,
