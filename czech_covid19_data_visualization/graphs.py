@@ -14,7 +14,7 @@ Data = Dict[str, Union[str, List[Dict[str, Any]]]]
 
 def vertical_bar_and_line_2inputs(data: Data, graph_number: int = 1) -> Any:
     df: DataFrame = DataFrame.from_records(data["data"])
-    labels: List[str] = df.columns
+    labels: List[str] = [item.replace("_", " ").capitalize() for item in df.columns]
 
     fig: Any = make_subplots(specs=[[{"secondary_y": True}]])
     fig.add_trace(
@@ -32,7 +32,7 @@ def vertical_bar_and_line_2inputs(data: Data, graph_number: int = 1) -> Any:
 
 def line_3inputs(data: Data, graph_number: int = 1) -> Any:
     df: DataFrame = DataFrame.from_records(data["data"])
-    labels: List[str] = df.columns
+    labels: List[str] = [item.replace("_", " ").capitalize() for item in df.columns]
 
     fig: Any = make_subplots(specs=[[{"secondary_y": True}]])
     fig.add_trace(
@@ -62,6 +62,7 @@ def bar_one_timepoint(data: Data, graph_number: int = 1) -> Any:
     fig: Any = make_subplots(specs=[[{"secondary_y": True}]])
 
     for label, value in items:
+        label = label.replace("_", " ").capitalize()
         sec_y: bool = False if value > thresh else True
         fig.add_trace(go.Bar(name=label, x=[label], y=[value]), secondary_y=sec_y)
 
