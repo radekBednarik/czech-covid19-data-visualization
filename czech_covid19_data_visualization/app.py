@@ -35,7 +35,7 @@ app.layout = html.Div(
                                 {"label": "Number of infected", "value": "infected"},
                                 {"label": "Number of tests done", "value": "tests"},
                                 {
-                                    "label": "Number of infected, cured, deaths and tests done",
+                                    "label": "Number of infected, cured and deaths",
                                     "value": "all_numbers",
                                 },
                                 {"label": "Basic overview", "value": "basic_overview"},
