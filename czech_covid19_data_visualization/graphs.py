@@ -64,7 +64,10 @@ def bar_one_timepoint(data: Data, graph_number: int = 1) -> Any:
     for label, value in items:
         label = label.replace("_", " ").capitalize()
         sec_y: bool = False if value > thresh else True
-        fig.add_trace(go.Bar(name=label, x=[label], y=[value]), secondary_y=sec_y)
+        fig.add_trace(
+            go.Bar(name=label, x=[label], y=[value], text=value, textposition="auto"),
+            secondary_y=sec_y,
+        )
 
     return html.Div(
         id=f"graphWrapper_{graph_number}",
