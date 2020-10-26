@@ -25,4 +25,7 @@ setup(
         "Operating System :: OS Independent",
     ],
     python_requires='>=3.6',
+    entry_points={
+        "console_scripts": ["visualizer=czech_covid19_data_visualization.app:main"]
+    },
 )

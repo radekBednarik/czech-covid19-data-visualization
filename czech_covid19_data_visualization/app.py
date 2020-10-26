@@ -52,7 +52,7 @@ app.layout = html.Div(
                                     "value": "infected_individuals",
                                 },
                             ],
-                            value="infected",
+                            value="basic_overview",
                             multi=False,
                         )
                     ],
@@ -146,3 +146,11 @@ def display_data(data, value) -> Any:
 
         if value == "infected_individuals":
             return graphs.histogram(data, graph_number=1)
+
+
+def main() -> None:
+    app.run_server(debug=False, dev_tools_hot_reload=False)
+
+
+if __name__ == "__main__":
+    main()

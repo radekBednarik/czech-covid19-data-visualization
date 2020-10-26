@@ -28,7 +28,7 @@ Here's how to get it going on your machine:
 - then run:
 
     ```
-    python app_runner.py
+    visualizer
     ```
 
 - copy URL diplayed int the console into your browser and that's it.
