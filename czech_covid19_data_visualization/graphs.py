@@ -79,7 +79,7 @@ def histogram(data: Any, graph_number: int = 1) -> Any:
     fig: Any = make_subplots(rows=1, cols=len(list(transformed_data.keys())))
     for i, key in enumerate(list(transformed_data.keys())):
         fig.append_trace(
-            go.Histogram(name=key, x=transformed_data[key], nbinsx=10),
+            go.Histogram(name=key.capitalize(), x=transformed_data[key], nbinsx=10),
             1,
             i + 1,
         )
