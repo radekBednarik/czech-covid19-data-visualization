@@ -43,6 +43,25 @@ def get(data: str = "infected") -> ResourceReturn:
     return None
 
 
+def get_all_data() -> Any:
+    returned_data_dict: Dict[str, Any] = {}
+
+    list_to_get: List[str] = [
+        "infected",
+        "tests",
+        "all_numbers",
+        "basic_overview",
+        "cured",
+        "dead",
+        "infected_individuals",
+    ]
+
+    for each in list_to_get:
+        returned_data_dict[each] = get(data=each)
+
+    return returned_data_dict
+
+
 def transform_for_histogram(data: Any) -> Any:
     df: DataFrame = DataFrame.from_records(data)
     df_m = df[df["pohlavi"] == "M"]["vek"].dropna()
