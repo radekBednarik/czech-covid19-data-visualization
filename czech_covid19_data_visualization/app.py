@@ -60,7 +60,13 @@ app.layout = html.Div(
             ],
         ),
         html.Div(id="divisionWrapper", children=[html.Hr(id="menuSeparator")]),
-        html.Div(id="graphicWrapper", children=[]),
+        dcc.Loading(
+            id="loadingGraphicOverlay",
+            children=[
+                html.Div(id="graphicWrapper", children=[]),
+            ],
+            type="cube",
+        ),
         html.Div(
             id="footerWrapper",
             children=[
