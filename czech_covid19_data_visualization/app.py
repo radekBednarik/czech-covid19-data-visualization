@@ -17,7 +17,18 @@ app: dash.Dash = dash.Dash(
 app.layout = html.Div(
     id="mainWrapper",
     children=[
-        dcc.Store(id="dataStorage", storage_type="session"),
+        # dcc.Store(id="dataStorage", storage_type="local"),
+        dcc.Loading(
+            id="gettingDataLoader",
+            children=[
+                html.Div(
+                    id="dataLoaderHidden",
+                    children=[
+                        io.save_json_data_to_file("data.json", data.get_all_data())
+                    ],
+                )
+            ],
+        ),
         html.Div(
             id="headlineWrapper",
             children=[html.H1(id="headline", children="COVID19 Czech Data Visualizer")],
@@ -85,28 +96,14 @@ app.layout = html.Div(
     ],
 )
 
-# CALLBACKS
-@app.callback(
-    Output(component_id="dataStorage", component_property="data"),
-    [Input(component_id="dataSelector", component_property="value")],
-    [State(component_id="dataStorage", component_property="data")],
-)
-def initial_store(value, storage_data) -> Any:
-    if storage_data is not None:
-        PreventUpdate()
-    else:
-        io.save_json_data_to_file("data.json", data.get_all_data())
-        return "True"
-
 
 @app.callback(
     Output(component_id="graphicWrapper", component_property="children"),
     [Input(component_id="dataSelector", component_property="value")],
-    [State(component_id="dataStorage", component_property="data")],
-    prevent_initial_call=True,
+    # prevent_initial_call=True,
 )
-def display_data(value, storage_data) -> Any:
-    if value is None or storage_data is None:
+def display_data(value) -> Any:
+    if value is None:
         PreventUpdate()
 
     else:
@@ -140,7 +137,7 @@ def display_data(value, storage_data) -> Any:
 
 
 def main() -> None:
-    app.run_server(debug=True, dev_tools_hot_reload=True)
+    app.run_server(debug=False, dev_tools_hot_reload=False)
 
 
 if __name__ == "__main__":

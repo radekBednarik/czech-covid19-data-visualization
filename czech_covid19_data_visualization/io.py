@@ -6,6 +6,8 @@ def save_json_data_to_file(filepath: str, data: Any) -> None:
     with open(filepath, mode="w", encoding="utf-8") as file:
         json.dump(data, file, ensure_ascii=False)
 
+    return None
+
 
 def load_json_file(filepath: str) -> Any:
     with open(filepath, mode="r", encoding="utf-8") as file:

@@ -44,6 +44,12 @@ def get(data: str = "infected") -> ResourceReturn:
 
 
 def get_all_data() -> Any:
+
+    print(
+        "Fetching all data via one big API call - this saves API calls to the data server and \
+    \nspeeds up loading graphs of big data sets significantly. \
+    \nHowever, to get new data, you must restart the the app, not just refresh the browser."
+    )
     returned_data_dict: Dict[str, Any] = {}
 
     list_to_get: List[str] = [
