@@ -137,7 +137,7 @@ def display_data(value) -> Any:
 
 
 def main() -> None:
-    app.run_server(debug=False, dev_tools_hot_reload=False)
+    app.run_server(debug=True, dev_tools_hot_reload=True)
 
 
 if __name__ == "__main__":

@@ -74,3 +74,32 @@ def transform_for_histogram(data: Any) -> Any:
     df_z = df[df["pohlavi"] == "Z"]["vek"].dropna()
 
     return {"men": df_m, "women": df_z}
+
+
+def transform_for_index(
+    data_one: Dict[str, Optional[Dict[str, Any]]],
+    data_two: Dict[str, Optional[Dict[str, Any]]],
+) -> Any:
+    data_one_key: str = list(data_one.keys())[0]
+    data_two_key: str = list(data_two.keys())[0]
+
+    if data_one[data_one_key] is not None and data_two[data_two_key] is not None:
+
+        df_one: DataFrame = DataFrame.from_dict(data_one[data_one_key]["data"])
+        df_two: DataFrame = DataFrame.from_dict(data_two[data_two_key]["data"])
+
+        df_one = DataFrame(df_one[data_one_key]).set_index(df_one["datum"])
+        df_two = DataFrame(df_two[data_two_key]).set_index(df_two["datum"])
+
+        df_final: DataFrame = df_one[data_one_key].div(df_two[data_two_key])
+
+        print(df_one.head)
+        print(df_two.head)
+        print(df_final.head)
+
+
+if __name__ == "__main__":
+    result: Any = transform_for_index(
+        {"prirustkovy_pocet_nakazenych": get(data="infected")},
+        {"prirustkovy_pocet_testu": get(data="tests")},
+    )
