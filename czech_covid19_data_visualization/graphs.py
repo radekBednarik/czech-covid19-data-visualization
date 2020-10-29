@@ -97,10 +97,11 @@ def histogram(data: Any, graph_number: int = 1) -> Any:
 
 
 def index_line(label: str, data_one: Any, data_two: Any, graph_number: int = 1) -> Any:
-    data: Series = transform_for_index(data_one, data_two)
+    (data, trend) = transform_for_index(data_one, data_two)
 
     fig: Any = make_subplots()
     fig.add_trace(go.Scatter(x=data.index, y=data, mode="lines", name=label, text=data))
+    fig.add_trace(go.Scatter(x=data.index, y=trend, mode="lines", name="trend"))
     fig.update_layout(showlegend=True)
 
     return html.Div(

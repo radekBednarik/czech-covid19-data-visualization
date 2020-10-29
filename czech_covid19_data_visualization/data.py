@@ -94,8 +94,9 @@ def transform_for_index(
         final: Series = Series(
             df_one[data_one_key].div(df_two[data_two_key]), name="two_timeseries_index"
         ).dropna()
+        final_trend: Series = final.rolling(7).mean()
 
-        return final
+        return (final, final_trend)
     return None
 
 
