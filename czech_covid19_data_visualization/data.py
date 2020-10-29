@@ -3,7 +3,7 @@ from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
 import pandas as pd
 from covid19_api.src import api
-from pandas import DataFrame
+from pandas import DataFrame, Series
 
 # TYPE ALIASES
 
@@ -91,15 +91,16 @@ def transform_for_index(
         df_one = DataFrame(df_one[data_one_key]).set_index(df_one["datum"])
         df_two = DataFrame(df_two[data_two_key]).set_index(df_two["datum"])
 
-        df_final: DataFrame = df_one[data_one_key].div(df_two[data_two_key])
+        final: Series = Series(
+            df_one[data_one_key].div(df_two[data_two_key]), name="two_timeseries_index"
+        ).dropna()
 
-        print(df_one.head)
-        print(df_two.head)
-        print(df_final.head)
+        return final
+    return None
 
 
-if __name__ == "__main__":
-    result: Any = transform_for_index(
-        {"prirustkovy_pocet_nakazenych": get(data="infected")},
-        {"prirustkovy_pocet_testu": get(data="tests")},
-    )
+# if __name__ == "__main__":
+#     result: Any = transform_for_index(
+#         {"prirustkovy_pocet_nakazenych": get(data="infected")},
+#         {"prirustkovy_pocet_testu": get(data="tests")},
+#     )
