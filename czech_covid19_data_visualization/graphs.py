@@ -99,8 +99,9 @@ def histogram(data: Any, graph_number: int = 1) -> Any:
 def index_line(label: str, data_one: Any, data_two: Any, graph_number: int = 1) -> Any:
     data: Series = transform_for_index(data_one, data_two)
 
-    fig: Any = go.Figure()
-    fig.add_trace(go.Scatter(name=label, x=data.index, y=data, mode="lines"))
+    fig: Any = make_subplots()
+    fig.add_trace(go.Scatter(x=data.index, y=data, mode="lines", name=label, text=data))
+    fig.update_layout(showlegend=True)
 
     return html.Div(
         id=f"graphWrapper_{graph_number}",
