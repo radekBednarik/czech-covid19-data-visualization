@@ -45,6 +45,10 @@ app.layout = html.Div(
                                 {"label": "Number of infected", "value": "infected"},
                                 {"label": "Number of tests done", "value": "tests"},
                                 {
+                                    "label": "Infected to tests done ratio",
+                                    "value": "infected_to_tests",
+                                },
+                                {
                                     "label": "Number of infected, cured and deaths",
                                     "value": "all_numbers",
                                 },
@@ -135,9 +139,19 @@ def display_data(value) -> Any:
         if value == "infected_individuals":
             return graphs.histogram(loaded_data["infected_individuals"], graph_number=1)
 
+        if value == "infected_to_tests":
+            data_one: Any = loaded_data["infected"]
+            data_two: Any = loaded_data["tests"]
+            return graphs.index_line(
+                "Infected to tests done ratio",
+                {"prirustkovy_pocet_nakazenych": data_one},
+                {"prirustkovy_pocet_testu": data_two},
+                graph_number=1,
+            )
+
 
 def main() -> None:
-    app.run_server(debug=True, dev_tools_hot_reload=True)
+    app.run_server(debug=False, dev_tools_hot_reload=False)
 
 
 if __name__ == "__main__":

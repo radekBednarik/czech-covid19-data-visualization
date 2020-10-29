@@ -3,10 +3,13 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 import dash_core_components as dcc
 import dash_html_components as html
 import plotly.graph_objects as go
-from pandas import DataFrame
+from pandas import DataFrame, Series
 from plotly.subplots import make_subplots
 
-from czech_covid19_data_visualization.data import transform_for_histogram
+from czech_covid19_data_visualization.data import (
+    transform_for_histogram,
+    transform_for_index,
+)
 
 # pylint: disable=unsubscriptable-object
 Data = Dict[str, Union[str, List[Dict[str, Any]]]]
@@ -90,4 +93,16 @@ def histogram(data: Any, graph_number: int = 1) -> Any:
     return html.Div(
         id=f"graphWrapper_{graph_number}",
         children=[dcc.Graph(id=f"histogram_{graph_number}", figure=fig)],
+    )
+
+
+def index_line(label: str, data_one: Any, data_two: Any, graph_number: int = 1) -> Any:
+    data: Series = transform_for_index(data_one, data_two)
+
+    fig: Any = go.Figure()
+    fig.add_trace(go.Scatter(name=label, x=data.index, y=data, mode="lines"))
+
+    return html.Div(
+        id=f"graphWrapper_{graph_number}",
+        children=[dcc.Graph(id=f"indexLineGraph_{graph_number}", figure=fig)],
     )
