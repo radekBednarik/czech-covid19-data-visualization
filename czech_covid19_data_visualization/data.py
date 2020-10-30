@@ -98,10 +98,3 @@ def transform_for_index(
 
         return (final, final_trend)
     return None
-
-
-# if __name__ == "__main__":
-#     result: Any = transform_for_index(
-#         {"prirustkovy_pocet_nakazenych": get(data="infected")},
-#         {"prirustkovy_pocet_testu": get(data="tests")},
-#     )

@@ -9,6 +9,7 @@ from dash.exceptions import PreventUpdate
 from czech_covid19_data_visualization import data, graphs, io
 
 external_stylesheets: List[str] = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+api_data: Any = data.get_all_data()
 
 app: dash.Dash = dash.Dash(
     name="Czech COVID19 Data Visualizer", external_stylesheets=external_stylesheets
@@ -17,18 +18,6 @@ app: dash.Dash = dash.Dash(
 app.layout = html.Div(
     id="mainWrapper",
     children=[
-        # dcc.Store(id="dataStorage", storage_type="local"),
-        dcc.Loading(
-            id="gettingDataLoader",
-            children=[
-                html.Div(
-                    id="dataLoaderHidden",
-                    children=[
-                        io.save_json_data_to_file("data.json", data.get_all_data())
-                    ],
-                )
-            ],
-        ),
         html.Div(
             id="headlineWrapper",
             children=[html.H1(id="headline", children="COVID19 Czech Data Visualizer")],
@@ -104,44 +93,42 @@ app.layout = html.Div(
 @app.callback(
     Output(component_id="graphicWrapper", component_property="children"),
     [Input(component_id="dataSelector", component_property="value")],
-    # prevent_initial_call=True,
 )
 def display_data(value) -> Any:
     if value is None:
         PreventUpdate()
 
     else:
-        loaded_data: Any = io.load_json_file("data.json")
         if value == "infected":
             return graphs.vertical_bar_and_line_2inputs(
-                loaded_data["infected"], graph_number=1
+                api_data["infected"], graph_number=1
             )
 
         if value == "tests":
             return graphs.vertical_bar_and_line_2inputs(
-                loaded_data["tests"], graph_number=1
+                api_data["tests"], graph_number=1
             )
 
         if value == "all_numbers":
-            return graphs.line_3inputs(loaded_data["all_numbers"], graph_number=1)
+            return graphs.line_3inputs(api_data["all_numbers"], graph_number=1)
 
         if value == "basic_overview":
             return graphs.bar_one_timepoint(
-                loaded_data["basic_overview"], graph_number=1
+                api_data["basic_overview"], graph_number=1
             )
 
         if value == "cured":
-            return graphs.histogram(loaded_data["cured"], graph_number=1)
+            return graphs.histogram(api_data["cured"], graph_number=1)
 
         if value == "dead":
-            return graphs.histogram(loaded_data["dead"], graph_number=1)
+            return graphs.histogram(api_data["dead"], graph_number=1)
 
         if value == "infected_individuals":
-            return graphs.histogram(loaded_data["infected_individuals"], graph_number=1)
+            return graphs.histogram(api_data["infected_individuals"], graph_number=1)
 
         if value == "infected_to_tests":
-            data_one: Any = loaded_data["infected"]
-            data_two: Any = loaded_data["tests"]
+            data_one: Any = api_data["infected"]
+            data_two: Any = api_data["tests"]
             return graphs.index_line(
                 "Infected to tests done ratio",
                 {"prirustkovy_pocet_nakazenych": data_one},
