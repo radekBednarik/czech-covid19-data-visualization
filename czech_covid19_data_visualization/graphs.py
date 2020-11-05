@@ -16,95 +16,133 @@ Data = Dict[str, Union[str, List[Dict[str, Any]]]]
 
 
 def vertical_bar_and_line_2inputs(data: Data, graph_number: int = 1) -> Any:
-    df: DataFrame = DataFrame.from_records(data["data"])
-    labels: List[str] = [item.replace("_", " ").capitalize() for item in df.columns]
+    try:
+        df: DataFrame = DataFrame.from_records(data["data"])
+        labels: List[str] = [item.replace("_", " ").capitalize() for item in df.columns]
 
-    fig: Any = make_subplots(specs=[[{"secondary_y": True}]])
-    fig.add_trace(
-        go.Bar(name=labels[1], x=df.iloc[:, 0], y=df.iloc[:, 1]), secondary_y=False
-    )
-    fig.add_trace(
-        go.Scatter(name=labels[2], x=df.iloc[:, 0], y=df.iloc[:, 2]), secondary_y=True
-    )
+        fig: Any = make_subplots(specs=[[{"secondary_y": True}]])
+        fig.add_trace(
+            go.Bar(name=labels[1], x=df.iloc[:, 0], y=df.iloc[:, 1]), secondary_y=False
+        )
+        fig.add_trace(
+            go.Scatter(name=labels[2], x=df.iloc[:, 0], y=df.iloc[:, 2]),
+            secondary_y=True,
+        )
 
-    return html.Div(
-        id=f"graphWrapper_{graph_number}",
-        children=[dcc.Graph(id=f"barLineChart_{graph_number}", figure=fig)],
-    )
+        return html.Div(
+            id=f"graphWrapper_{graph_number}",
+            children=[dcc.Graph(id=f"barLineChart_{graph_number}", figure=fig)],
+        )
+    except Exception as e:
+        return html.Div(
+            id=f"exceptionInfoWrapper_{graph_number}",
+            children=[f"Graph could not be rendered. Exception: {str(e)}"],
+        )
 
 
 def line_3inputs(data: Data, graph_number: int = 1) -> Any:
-    df: DataFrame = DataFrame.from_records(data["data"])
-    labels: List[str] = [item.replace("_", " ").capitalize() for item in df.columns]
+    try:
+        df: DataFrame = DataFrame.from_records(data["data"])
+        labels: List[str] = [item.replace("_", " ").capitalize() for item in df.columns]
 
-    fig: Any = make_subplots(specs=[[{"secondary_y": True}]])
-    fig.add_trace(
-        go.Scatter(name=labels[1], x=df.iloc[:, 0], y=df.iloc[:, 1]), secondary_y=False
-    )
-    fig.add_trace(
-        go.Scatter(name=labels[2], x=df.iloc[:, 0], y=df.iloc[:, 2]), secondary_y=False
-    )
-    fig.add_trace(
-        go.Scatter(name=labels[3], x=df.iloc[:, 0], y=df.iloc[:, 3]), secondary_y=True
-    )
+        fig: Any = make_subplots(specs=[[{"secondary_y": True}]])
+        fig.add_trace(
+            go.Scatter(name=labels[1], x=df.iloc[:, 0], y=df.iloc[:, 1]),
+            secondary_y=False,
+        )
+        fig.add_trace(
+            go.Scatter(name=labels[2], x=df.iloc[:, 0], y=df.iloc[:, 2]),
+            secondary_y=False,
+        )
+        fig.add_trace(
+            go.Scatter(name=labels[3], x=df.iloc[:, 0], y=df.iloc[:, 3]),
+            secondary_y=True,
+        )
 
-    return html.Div(
-        id=f"graphWrapper_{graph_number}",
-        children=[dcc.Graph(id=f"lineChart_{graph_number}", figure=fig)],
-    )
+        return html.Div(
+            id=f"graphWrapper_{graph_number}",
+            children=[dcc.Graph(id=f"lineChart_{graph_number}", figure=fig)],
+        )
+    except Exception as e:
+        return html.Div(
+            id=f"exceptionInfoWrapper_{graph_number}",
+            children=[f"Graph could not be rendered. Exception: {str(e)}"],
+        )
 
 
 def bar_one_timepoint(data: Data, graph_number: int = 1) -> Any:
-    data_: Dict[str, Any] = data["data"][0]
-    values: List[int] = list(data_.values())
-    items: List[Tuple[str, int]] = sorted(
-        list(data_.items())[1:10], key=lambda item: item[1], reverse=True
-    )
-    thresh: float = max(values[1:10]) * 0.2
-
-    fig: Any = make_subplots(specs=[[{"secondary_y": True}]])
-
-    for label, value in items:
-        label = label.replace("_", " ").capitalize()
-        sec_y: bool = False if value > thresh else True
-        fig.add_trace(
-            go.Bar(name=label, x=[label], y=[value], text=value, textposition="auto"),
-            secondary_y=sec_y,
+    try:
+        data_: Dict[str, Any] = data["data"][0]
+        values: List[int] = list(data_.values())
+        items: List[Tuple[str, int]] = sorted(
+            list(data_.items())[1:10], key=lambda item: item[1], reverse=True
         )
+        thresh: float = max(values[1:10]) * 0.2
 
-    return html.Div(
-        id=f"graphWrapper_{graph_number}",
-        children=[dcc.Graph(id=f"barChart_{graph_number}", figure=fig)],
-    )
+        fig: Any = make_subplots(specs=[[{"secondary_y": True}]])
+
+        for label, value in items:
+            label = label.replace("_", " ").capitalize()
+            sec_y: bool = False if value > thresh else True
+            fig.add_trace(
+                go.Bar(
+                    name=label, x=[label], y=[value], text=value, textposition="auto"
+                ),
+                secondary_y=sec_y,
+            )
+
+        return html.Div(
+            id=f"graphWrapper_{graph_number}",
+            children=[dcc.Graph(id=f"barChart_{graph_number}", figure=fig)],
+        )
+    except Exception as e:
+        return html.Div(
+            id=f"exceptionInfoWrapper_{graph_number}",
+            children=[f"Graph could not be rendered. Exception: {str(e)}"],
+        )
 
 
 def histogram(data: Any, graph_number: int = 1) -> Any:
-    data_: Dict[str, Any] = data["data"]
-    transformed_data: Dict[str, Any] = transform_for_histogram(data_)
+    try:
+        data_: Dict[str, Any] = data["data"]
+        transformed_data: Dict[str, Any] = transform_for_histogram(data_)
 
-    fig: Any = make_subplots(rows=1, cols=len(list(transformed_data.keys())))
-    for i, key in enumerate(list(transformed_data.keys())):
-        fig.append_trace(
-            go.Histogram(name=key.capitalize(), x=transformed_data[key], nbinsx=10),
-            1,
-            i + 1,
+        fig: Any = make_subplots(rows=1, cols=len(list(transformed_data.keys())))
+        for i, key in enumerate(list(transformed_data.keys())):
+            fig.append_trace(
+                go.Histogram(name=key.capitalize(), x=transformed_data[key], nbinsx=10),
+                1,
+                i + 1,
+            )
+
+        return html.Div(
+            id=f"graphWrapper_{graph_number}",
+            children=[dcc.Graph(id=f"histogram_{graph_number}", figure=fig)],
         )
-
-    return html.Div(
-        id=f"graphWrapper_{graph_number}",
-        children=[dcc.Graph(id=f"histogram_{graph_number}", figure=fig)],
-    )
+    except Exception as e:
+        return html.Div(
+            id=f"exceptionInfoWrapper_{graph_number}",
+            children=[f"Graph could not be rendered. Exception: {str(e)}"],
+        )
 
 
 def index_line(label: str, data_one: Any, data_two: Any, graph_number: int = 1) -> Any:
-    (data, trend) = transform_for_index(data_one, data_two)
+    try:
+        (data, trend) = transform_for_index(data_one, data_two)
 
-    fig: Any = make_subplots()
-    fig.add_trace(go.Scatter(x=data.index, y=data, mode="lines", name=label, text=data))
-    fig.add_trace(go.Scatter(x=data.index, y=trend, mode="lines", name="trend"))
-    fig.update_layout(showlegend=True)
+        fig: Any = make_subplots()
+        fig.add_trace(
+            go.Scatter(x=data.index, y=data, mode="lines", name=label, text=data)
+        )
+        fig.add_trace(go.Scatter(x=data.index, y=trend, mode="lines", name="trend"))
+        fig.update_layout(showlegend=True)
 
-    return html.Div(
-        id=f"graphWrapper_{graph_number}",
-        children=[dcc.Graph(id=f"indexLineGraph_{graph_number}", figure=fig)],
-    )
+        return html.Div(
+            id=f"graphWrapper_{graph_number}",
+            children=[dcc.Graph(id=f"indexLineGraph_{graph_number}", figure=fig)],
+        )
+    except Exception as e:
+        return html.Div(
+            id=f"exceptionInfoWrapper_{graph_number}",
+            children=[f"Graph could not be rendered. Exception: {str(e)}"],
+        )
