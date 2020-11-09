@@ -16,6 +16,10 @@ from czech_covid19_data_visualization.io import get_screen_res
 # pylint: disable=unsubscriptable-object
 Data = Dict[str, Union[str, List[Dict[str, Any]]]]
 
+screen_res: Any = get_screen_res()
+WIDTH_MOD: float = 0.9
+HEIGHT_MOD: float = 0.7
+
 
 def vertical_bar_and_line_2inputs(data: Data, graph_number: int = 1) -> Any:
     try:
@@ -29,6 +33,11 @@ def vertical_bar_and_line_2inputs(data: Data, graph_number: int = 1) -> Any:
         fig.add_trace(
             go.Scatter(name=labels[2], x=df.iloc[:, 0], y=df.iloc[:, 2]),
             secondary_y=True,
+        )
+        fig.update_layout(
+            autosize=False,
+            width=screen_res.width * WIDTH_MOD,
+            height=screen_res.height * HEIGHT_MOD,
         )
 
         return html.Div(
@@ -59,6 +68,11 @@ def line_3inputs(data: Data, graph_number: int = 1) -> Any:
         fig.add_trace(
             go.Scatter(name=labels[3], x=df.iloc[:, 0], y=df.iloc[:, 3]),
             secondary_y=True,
+        )
+        fig.update_layout(
+            autosize=False,
+            width=screen_res.width * WIDTH_MOD,
+            height=screen_res.height * HEIGHT_MOD,
         )
 
         return html.Div(
@@ -92,6 +106,11 @@ def bar_one_timepoint(data: Data, graph_number: int = 1) -> Any:
                 ),
                 secondary_y=sec_y,
             )
+        fig.update_layout(
+            autosize=False,
+            width=screen_res.width * WIDTH_MOD,
+            height=screen_res.height * HEIGHT_MOD,
+        )
 
         return html.Div(
             id=f"graphWrapper_{graph_number}",
@@ -116,6 +135,11 @@ def histogram(data: Any, graph_number: int = 1) -> Any:
                 1,
                 i + 1,
             )
+        fig.update_layout(
+            autosize=False,
+            width=screen_res.width * WIDTH_MOD,
+            height=screen_res.height * HEIGHT_MOD,
+        )
         fig.update_yaxes(automargin=True)
 
         return html.Div(
@@ -138,7 +162,12 @@ def index_line(label: str, data_one: Any, data_two: Any, graph_number: int = 1) 
             go.Scatter(x=data.index, y=data, mode="lines", name=label, text=data)
         )
         fig.add_trace(go.Scatter(x=data.index, y=trend, mode="lines", name="trend"))
-        fig.update_layout(showlegend=True)
+        fig.update_layout(
+            showlegend=True,
+            autosize=False,
+            width=screen_res.width * WIDTH_MOD,
+            height=screen_res.height * HEIGHT_MOD,
+        )
 
         return html.Div(
             id=f"graphWrapper_{graph_number}",
@@ -161,8 +190,8 @@ def delta_bar_and_line(label: str, data: Any, graph_number: int = 1) -> Any:
         fig.update_layout(
             showlegend=True,
             autosize=False,
-            width=get_screen_res().width * 0.9,
-            height=get_screen_res().height * 0.7,
+            width=screen_res.width * WIDTH_MOD,
+            height=screen_res.height * HEIGHT_MOD,
         )
         fig.update_yaxes(automargin=True)
 
