@@ -32,6 +32,10 @@ app.layout = html.Div(
                             id="dataSelector",
                             options=[
                                 {"label": "Number of infected", "value": "infected"},
+                                {
+                                    "label": "7D Delta: Number of infected",
+                                    "value": "infected_delta",
+                                },
                                 {"label": "Number of tests done", "value": "tests"},
                                 {
                                     "label": "Infected to tests done ratio",
@@ -104,6 +108,14 @@ def display_data(value) -> Any:
                 api_data["infected"], graph_number=1
             )
 
+        if value == "infected_delta":
+            data_infected: Any = api_data["infected"]
+            return graphs.delta_bar_and_line(
+                "Daily number of infected",
+                {"prirustkovy_pocet_nakazenych": data_infected},
+                graph_number=1,
+            )
+
         if value == "tests":
             return graphs.vertical_bar_and_line_2inputs(
                 api_data["tests"], graph_number=1
@@ -113,9 +125,7 @@ def display_data(value) -> Any:
             return graphs.line_3inputs(api_data["all_numbers"], graph_number=1)
 
         if value == "basic_overview":
-            return graphs.bar_one_timepoint(
-                api_data["basic_overview"], graph_number=1
-            )
+            return graphs.bar_one_timepoint(api_data["basic_overview"], graph_number=1)
 
         if value == "cured":
             return graphs.histogram(api_data["cured"], graph_number=1)

@@ -7,9 +7,11 @@ from pandas import DataFrame, Series
 from plotly.subplots import make_subplots
 
 from czech_covid19_data_visualization.data import (
+    transform_for_delta,
     transform_for_histogram,
     transform_for_index,
 )
+from czech_covid19_data_visualization.io import get_screen_res
 
 # pylint: disable=unsubscriptable-object
 Data = Dict[str, Union[str, List[Dict[str, Any]]]]
@@ -114,6 +116,7 @@ def histogram(data: Any, graph_number: int = 1) -> Any:
                 1,
                 i + 1,
             )
+        fig.update_yaxes(automargin=True)
 
         return html.Div(
             id=f"graphWrapper_{graph_number}",
@@ -141,6 +144,33 @@ def index_line(label: str, data_one: Any, data_two: Any, graph_number: int = 1) 
             id=f"graphWrapper_{graph_number}",
             children=[dcc.Graph(id=f"indexLineGraph_{graph_number}", figure=fig)],
         )
+    except Exception as e:
+        return html.Div(
+            id=f"exceptionInfoWrapper_{graph_number}",
+            children=[f"Graph could not be rendered. Exception: {str(e)}"],
+        )
+
+
+def delta_bar_and_line(label: str, data: Any, graph_number: int = 1) -> Any:
+    try:
+        (original, delta) = transform_for_delta(data)
+
+        fig: Any = make_subplots(rows=2, cols=1)
+        fig.append_trace(go.Bar(x=delta.index, y=delta, name="7-day delta"), 1, 1)
+        fig.append_trace(go.Bar(x=original.index, y=original, name=label), 2, 1)
+        fig.update_layout(
+            showlegend=True,
+            autosize=False,
+            width=get_screen_res().width * 0.9,
+            height=get_screen_res().height * 0.7,
+        )
+        fig.update_yaxes(automargin=True)
+
+        return html.Div(
+            id=f"graphWrapper_{graph_number}",
+            children=[dcc.Graph(id=f"deltaBarLineGraph_{graph_number}", figure=fig)],
+        )
+
     except Exception as e:
         return html.Div(
             id=f"exceptionInfoWrapper_{graph_number}",

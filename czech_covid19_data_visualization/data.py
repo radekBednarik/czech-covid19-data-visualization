@@ -77,8 +77,8 @@ def transform_for_histogram(data: Any) -> Any:
 
 
 def transform_for_index(
-    data_one: Dict[str, Optional[Dict[str, Any]]],
-    data_two: Dict[str, Optional[Dict[str, Any]]],
+    data_one: Dict[str, Dict[str, Any]],
+    data_two: Dict[str, Dict[str, Any]],
 ) -> Any:
     data_one_key: str = list(data_one.keys())[0]
     data_two_key: str = list(data_two.keys())[0]
@@ -97,4 +97,19 @@ def transform_for_index(
         final_trend: Series = final.rolling(7).mean()
 
         return (final, final_trend)
+    return None
+
+
+def transform_for_delta(
+    data: Dict[str, Dict[str, Any]],
+) -> Any:
+    data_key: str = list(data.keys())[0]
+
+    if data[data_key] is not None:
+        df_data: DataFrame = DataFrame.from_dict(data[data_key]["data"])
+        df_data = DataFrame(df_data[data_key]).set_index(df_data["datum"])
+        original: Series = Series(df_data[data_key])
+        delta: Series = Series(df_data[data_key].diff(periods=7))
+
+        return (original, delta)
     return None

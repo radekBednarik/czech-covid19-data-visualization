@@ -18,6 +18,7 @@ setup(
         "pandas",
         "czech-covid19-data-api",
         "dash-bootstrap-components",
+        "screeninfo",
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
