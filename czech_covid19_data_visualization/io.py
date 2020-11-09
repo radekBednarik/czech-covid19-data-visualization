@@ -17,9 +17,9 @@ def load_json_file(filepath: str) -> Any:
 
 
 def get_screen_res() -> Any:
-    """Returns the first one monitor, it returns in case of multimonitor setup.
+    """Returns the first one monitor in case of multimonitor setup.
 
     Returns:
-        Any: Monitor spec NamedTuple(x, y, width, height, name)
+        Any: Monitor spec Class(x, y, width, height, name)
     """
     return get_monitors()[0]
