@@ -161,7 +161,9 @@ def index_line(label: str, data_one: Any, data_two: Any, graph_number: int = 1) 
         fig.add_trace(
             go.Scatter(x=data.index, y=data, mode="lines", name=label, text=data)
         )
-        fig.add_trace(go.Scatter(x=data.index, y=trend, mode="lines", name="trend"))
+        fig.add_trace(
+            go.Scatter(x=data.index, y=trend, mode="lines", name="trend (7D MA)")
+        )
         fig.update_layout(
             showlegend=True,
             autosize=False,
