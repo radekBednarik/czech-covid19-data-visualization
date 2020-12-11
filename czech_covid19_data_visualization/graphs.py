@@ -18,7 +18,7 @@ Data = Dict[str, Union[str, List[Dict[str, Any]]]]
 
 screen_res: Any = get_screen_res()
 WIDTH_MOD: float = 0.9
-HEIGHT_MOD: float = 0.7
+HEIGHT_MOD: float = 0.65
 
 
 def vertical_bar_and_line_2inputs(data: Data, graph_number: int = 1) -> Any:
@@ -131,12 +131,17 @@ def histogram(data: Any, graph_number: int = 1) -> Any:
         fig: Any = make_subplots(rows=1, cols=len(list(transformed_data.keys())))
         for i, key in enumerate(list(transformed_data.keys())):
             fig.append_trace(
-                go.Histogram(name=key.capitalize(), x=transformed_data[key], nbinsx=10),
+                go.Histogram(
+                    name=key.capitalize(),
+                    x=transformed_data[key],
+                    xbins=dict(start=0.0, end=110.0, size=10.0),
+                ),
                 1,
                 i + 1,
             )
         fig.update_layout(
             autosize=False,
+            bargap=0.05,
             width=screen_res.width * WIDTH_MOD,
             height=screen_res.height * HEIGHT_MOD,
         )
