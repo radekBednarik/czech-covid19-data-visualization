@@ -12,7 +12,7 @@ external_stylesheets: List[str] = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 api_data: Any = data.get_all_data()
 
 app: dash.Dash = dash.Dash(
-    name="Czech COVID19 Data Visualizer", external_stylesheets=external_stylesheets
+    __name__, external_stylesheets=external_stylesheets, include_assets_files=False
 )
 
 app.layout = html.Div(
